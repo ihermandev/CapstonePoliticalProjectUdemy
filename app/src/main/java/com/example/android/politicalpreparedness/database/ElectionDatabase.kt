@@ -6,6 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.android.politicalpreparedness.network.models.Election
+import com.example.android.politicalpreparedness.util.Const.ELECTION_DATABASE_NAME
 
 @Database(entities = [Election::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
@@ -25,7 +26,7 @@ abstract class ElectionDatabase: RoomDatabase() {
                     instance = Room.databaseBuilder(
                             context.applicationContext,
                             ElectionDatabase::class.java,
-                            "election_database"
+                            ELECTION_DATABASE_NAME
                     )
                             .fallbackToDestructiveMigration()
                             .build()
