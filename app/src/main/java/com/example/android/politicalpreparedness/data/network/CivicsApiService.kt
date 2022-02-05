@@ -1,10 +1,10 @@
-package com.example.android.politicalpreparedness.network
+package com.example.android.politicalpreparedness.data.network
 
-import com.example.android.politicalpreparedness.network.jsonadapter.DateAdapter
-import com.example.android.politicalpreparedness.network.jsonadapter.ElectionAdapter
-import com.example.android.politicalpreparedness.network.models.ElectionResponse
-import com.example.android.politicalpreparedness.network.models.RepresentativeResponse
-import com.example.android.politicalpreparedness.network.models.VoterInfoResponse
+import com.example.android.politicalpreparedness.data.network.jsonadapter.DateAdapter
+import com.example.android.politicalpreparedness.data.network.jsonadapter.ElectionAdapter
+import com.example.android.politicalpreparedness.data.network.models.ElectionResponse
+import com.example.android.politicalpreparedness.data.network.models.RepresentativeResponse
+import com.example.android.politicalpreparedness.data.network.models.VoterInfoResponse
 import com.example.android.politicalpreparedness.util.Const.BASE_URL
 import com.example.android.politicalpreparedness.util.Const.GET_ELECTIONS
 import com.example.android.politicalpreparedness.util.Const.GET_REPRESENTATIVES

@@ -1,7 +1,7 @@
-package com.example.android.politicalpreparedness.database
+package com.example.android.politicalpreparedness.data.local.database
 
 import androidx.room.*
-import com.example.android.politicalpreparedness.network.models.Election
+import com.example.android.politicalpreparedness.data.network.models.Election
 import com.example.android.politicalpreparedness.util.Const.ELECTION_TABLE_NAME
 
 @Dao

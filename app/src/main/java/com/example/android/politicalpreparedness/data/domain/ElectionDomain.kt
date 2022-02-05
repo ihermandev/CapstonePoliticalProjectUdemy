@@ -1,8 +1,8 @@
-package com.example.android.politicalpreparedness.domain
+package com.example.android.politicalpreparedness.data.domain
 
 import android.os.Parcelable
-import com.example.android.politicalpreparedness.network.models.Division
-import com.example.android.politicalpreparedness.network.models.Election
+import com.example.android.politicalpreparedness.data.network.models.Division
+import com.example.android.politicalpreparedness.data.network.models.Election
 import kotlinx.parcelize.Parcelize
 import java.util.*
 

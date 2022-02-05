@@ -1,4 +1,4 @@
-package com.example.android.politicalpreparedness.network.jsonadapter
+package com.example.android.politicalpreparedness.data.network.jsonadapter
 
 import com.squareup.moshi.*
 import java.text.SimpleDateFormat

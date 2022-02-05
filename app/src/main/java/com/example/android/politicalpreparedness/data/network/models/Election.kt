@@ -1,7 +1,7 @@
-package com.example.android.politicalpreparedness.network.models
+package com.example.android.politicalpreparedness.data.network.models
 
 import androidx.room.*
-import com.example.android.politicalpreparedness.domain.ElectionDomain
+import com.example.android.politicalpreparedness.data.domain.ElectionDomain
 import com.example.android.politicalpreparedness.util.Const.ELECTION_TABLE_NAME
 import com.squareup.moshi.*
 import java.util.*

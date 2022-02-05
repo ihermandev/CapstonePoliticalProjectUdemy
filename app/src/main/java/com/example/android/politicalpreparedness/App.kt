@@ -1,7 +1,7 @@
 package com.example.android.politicalpreparedness
 
 import android.app.Application
-import com.example.android.politicalpreparedness.network.CivicsApi
+import com.example.android.politicalpreparedness.data.network.CivicsApi
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
