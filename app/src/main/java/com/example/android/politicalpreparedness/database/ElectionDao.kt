@@ -10,7 +10,7 @@ interface ElectionDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveElection(election: Election)
 
-    @Query("SELECT * FROM $ELECTION_TABLE_NAME")
+    @Query("SELECT * FROM $ELECTION_TABLE_NAME ORDER BY electionDay ASC")
     suspend fun getElections(): List<Election>
 
     @Query("SELECT * FROM $ELECTION_TABLE_NAME where id = :id")
@@ -21,5 +21,8 @@ interface ElectionDao {
 
     @Query("DELETE FROM $ELECTION_TABLE_NAME")
     suspend fun deleteAllData()
+
+    @Query("DELETE FROM election_table WHERE id = :id")
+    suspend fun deleteById(id: Int)
 
 }
