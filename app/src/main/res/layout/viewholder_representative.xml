@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="listener"
+            type="com.example.android.politicalpreparedness.representative.adapter.RepresentativeListener" />
+
+        <variable
+            name="representative"
+            type="com.example.android.politicalpreparedness.representative.model.Representative" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{()->listener.onClick(representative)}">
+
+        <ImageView
+            android:id="@+id/ivRepresentativePhoto"
+            profileImage="@{representative.official.photoUrl}"
+            android:layout_width="@dimen/avatar_size"
+            android:layout_height="@dimen/avatar_size"
+            android:layout_margin="@dimen/padding_default"
+            android:contentDescription="@string/representative_avatar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/ic_profile" />
+
+        <TextView
+            android:id="@+id/tvRepresentativeTitle"
+            style="@style/HeaderTextStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding_default"
+            android:contentDescription="@{representative.office.name}"
+            android:text="@{representative.office.name}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ivRepresentativePhoto"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text='Test Title' />
+
+        <TextView
+            android:id="@+id/tvRepresentativeName"
+            style="@style/SubHeaderTextStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/padding_default"
+            android:contentDescription="@{representative.official.name}"
+            android:text="@{representative.official.name}"
+            app:layout_constraintEnd_toStartOf="@+id/social_container"
+            app:layout_constraintStart_toStartOf="@+id/tvRepresentativeTitle"
+            app:layout_constraintTop_toBottomOf="@+id/tvRepresentativeTitle"
+            tools:text='John Doe' />
+
+        <TextView
+            android:id="@+id/tvRepresentativeType"
+            style="@style/ContentTextStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/padding_default"
+            android:contentDescription="@{representative.official.party}"
+            android:text="@{representative.official.party}"
+            app:layout_constraintEnd_toStartOf="@+id/social_container"
+            app:layout_constraintStart_toStartOf="@+id/tvRepresentativeTitle"
+            app:layout_constraintTop_toBottomOf="@+id/tvRepresentativeName"
+            tools:text='Test Type' />
+
+        <LinearLayout
+            android:id="@+id/social_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/tvRepresentativeTitle"
+            app:layout_constraintTop_toBottomOf="@+id/tvRepresentativeTitle">
+
+            <ImageView
+                android:id="@+id/ivFacebookIcon"
+                style="@style/SocialIconStyle"
+                android:contentDescription="@{@string/representative_fb(representative.official.name)}"
+                android:src="@drawable/ic_facebook"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/ivTwitterIcon"
+                app:layout_constraintTop_toBottomOf="@+id/tvRepresentativeTitle"
+                tools:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/ivTwitterIcon"
+                style="@style/SocialIconStyle"
+                android:contentDescription="@{@string/representative_twitter(representative.official.name)}"
+                android:src="@drawable/ic_twitter"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/ivWwwIcon"
+                app:layout_constraintTop_toBottomOf="@+id/tvRepresentativeTitle"
+                tools:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/ivWwwIcon"
+                style="@style/SocialIconStyle"
+                android:contentDescription="@{@string/representative_www(representative.official.name)}"
+                android:src="@drawable/ic_www"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvRepresentativeTitle"
+                tools:visibility="visible" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
