@@ -1,6 +1,7 @@
 package com.example.android.politicalpreparedness
 
 import android.app.Application
+import com.example.android.politicalpreparedness.network.CivicsApi
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -18,7 +19,7 @@ class App : Application() {
 
     private fun initKoin() {
         val mainModule = module {
-
+            single { CivicsApi.createCivicRetrofitService() }
         }
 
         startKoin {
