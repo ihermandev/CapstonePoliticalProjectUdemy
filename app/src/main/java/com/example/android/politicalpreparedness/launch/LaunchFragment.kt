@@ -25,12 +25,11 @@ class LaunchFragment : Fragment() {
         return binding.root
     }
 
-    //TODO finish nav
     private fun navToElections() {
-//        this.findNavController().navigate(LaunchFragmentDirections.actionLaunchFragmentToElectionsFragment())
+        this.findNavController().navigate(LaunchFragmentDirections.actionLaunchFragmentToElectionsFragment())
     }
 
     private fun navToRepresentatives() {
-//        this.findNavController().navigate(LaunchFragmentDirections.actionLaunchFragmentToRepresentativeFragment())
+        this.findNavController().navigate(LaunchFragmentDirections.actionLaunchFragmentToRepresentativeFragment())
     }
 }

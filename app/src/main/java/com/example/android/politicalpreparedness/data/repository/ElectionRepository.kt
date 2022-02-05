@@ -20,6 +20,10 @@ class ElectionRepository(
         it?.toDomainModel()
     }
 
+    val savedElections: LiveData<List<ElectionDomain>> = map(database.getElections()) {
+        it.filter { election -> election.isSaved }.toDomainModel()
+    }
+
     suspend fun updateElectionsData() {
         withContext(Dispatchers.IO) {
             when (val result = api.getElections()) {

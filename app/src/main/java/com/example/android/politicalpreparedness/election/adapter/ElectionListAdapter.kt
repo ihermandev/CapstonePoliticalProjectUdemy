@@ -5,18 +5,18 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.android.politicalpreparedness.data.domain.ElectionDomain
 import com.example.android.politicalpreparedness.databinding.ViewholderElectionBinding
-import com.example.android.politicalpreparedness.data.network.models.Election
 
 class ElectionListAdapter(private val clickListener: ElectionListener) :
-    ListAdapter<Election, ElectionListAdapter.ElectionViewHolder>(ElectionDiffCallback) {
+    ListAdapter<ElectionDomain, ElectionListAdapter.ElectionViewHolder>(ElectionDiffCallback) {
 
-    companion object ElectionDiffCallback : DiffUtil.ItemCallback<Election>() {
-        override fun areItemsTheSame(oldItem: Election, newItem: Election): Boolean {
+    companion object ElectionDiffCallback : DiffUtil.ItemCallback<ElectionDomain>() {
+        override fun areItemsTheSame(oldItem: ElectionDomain, newItem: ElectionDomain): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: Election, newItem: Election): Boolean {
+        override fun areContentsTheSame(oldItem: ElectionDomain, newItem: ElectionDomain): Boolean {
             return oldItem == newItem
         }
     }
@@ -34,9 +34,10 @@ class ElectionListAdapter(private val clickListener: ElectionListener) :
             )
         }
 
-        fun bind(election: Election, listener: ElectionListener) {
-            //TODO IMPLEMENT BINDING
-//            binding.executePendingBindings()
+        fun bind(election: ElectionDomain, listener: ElectionListener) {
+            binding.election = election
+            binding.listener = listener
+            binding.executePendingBindings()
         }
     }
 
@@ -50,6 +51,6 @@ class ElectionListAdapter(private val clickListener: ElectionListener) :
     }
 }
 
-class ElectionListener(val clickListener: (election: Election) -> Unit) {
-    fun onClick(election: Election) = clickListener(election)
+class ElectionListener(val clickListener: (election: ElectionDomain) -> Unit) {
+    fun onClick(election: ElectionDomain) = clickListener(election)
 }

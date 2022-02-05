@@ -10,5 +10,7 @@
     <string name="representative_fb">%s facebook page</string>
     <string name="representative_twitter">%s twitted</string>
     <string name="representative_www">%s www page</string>
+<!--    Elections Screen-->
+    <string name="saved_elections">Saved Elections</string>
 
 </resources>
