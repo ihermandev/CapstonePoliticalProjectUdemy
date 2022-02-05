@@ -26,5 +26,7 @@ ext{
     version_recyclerview = "1.2.0-alpha05"
     version_glide = "4.11.0"
     version_play_services_location = "17.0.0"
-    roomVersion = "2.3.0"
+    room_version = "2.3.0"
+    koin_version = '3.1.5'
+    timber_version = "5.0.1"
 }

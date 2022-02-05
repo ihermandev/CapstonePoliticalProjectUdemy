@@ -83,9 +83,15 @@ dependencies {
     annotationProcessor "com.github.bumptech.glide:compiler:$version_glide"
 
     //Room
-    implementation "androidx.room:room-ktx:$roomVersion"
-    implementation "androidx.room:room-runtime:$roomVersion"
-    kapt "androidx.room:room-compiler:$roomVersion"
+    implementation "androidx.room:room-ktx:$room_version"
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+
+    //Logger
+    implementation "com.jakewharton.timber:timber:$timber_version"
+
+    //Koin
+    implementation "io.insert-koin:koin-android:$koin_version"
 
     // Location
     implementation "com.google.android.gms:play-services-location:$version_play_services_location"
