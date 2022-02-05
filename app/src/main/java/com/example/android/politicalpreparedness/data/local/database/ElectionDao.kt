@@ -1,5 +1,6 @@
 package com.example.android.politicalpreparedness.data.local.database
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.android.politicalpreparedness.data.network.models.Election
 import com.example.android.politicalpreparedness.util.Const.ELECTION_TABLE_NAME
@@ -10,8 +11,11 @@ interface ElectionDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveElection(election: Election)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun saveElections(elections: List<Election>)
+
     @Query("SELECT * FROM $ELECTION_TABLE_NAME ORDER BY electionDay ASC")
-    suspend fun getElections(): List<Election>
+    fun getElections(): LiveData<List<Election>>
 
     @Query("SELECT * FROM $ELECTION_TABLE_NAME where id = :id")
     suspend fun getElectionById(id: Int): Election?
