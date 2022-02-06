@@ -4,24 +4,25 @@ import android.app.Application
 import androidx.lifecycle.*
 import com.example.android.politicalpreparedness.base.BaseViewModel
 import com.example.android.politicalpreparedness.base.NavigationCommand
-import com.example.android.politicalpreparedness.data.Result
 import com.example.android.politicalpreparedness.data.domain.ElectionDomain
-import com.example.android.politicalpreparedness.data.local.database.ElectionDao
-import com.example.android.politicalpreparedness.data.network.models.toDomainModel
+import com.example.android.politicalpreparedness.data.network.models.State
 import com.example.android.politicalpreparedness.data.repository.ElectionRepository
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class VoterInfoViewModel(
     app: Application,
     private val repository: ElectionRepository,
 ) : BaseViewModel(app) {
 
-    //TODO: Add live data to hold voter info
     private val _election = MutableLiveData<ElectionDomain>()
     val election: LiveData<ElectionDomain>
         get() = _election
 
-    //  private val _electionState = Mutable
+    private val _electionStateData = MutableLiveData<State>()
+    val electionStateData
+        get() = _electionStateData
+
 
     fun getElectionById(id: Int) {
         viewModelScope.launch {
@@ -29,7 +30,6 @@ class VoterInfoViewModel(
                 showLoading.value = true
                 val result = repository.getElectionById(id)
                 _election.value = result
-                println(result)
                 showLoading.postValue(false)
             } catch (e: Exception) {
                 showErrorMessage.postValue(e.localizedMessage)
@@ -43,16 +43,23 @@ class VoterInfoViewModel(
         viewModelScope.launch {
             try {
                 val result = repository.getVoterInfo(electionId = electionId, address = address)
-                println(result.state)
+                val stateInfo = result.state?.firstOrNull()
+                if (stateInfo != null) {
+                    _electionStateData.postValue(stateInfo)
+                } else {
+                    showErrorMessage.value = "State not found"
+                }
+                showLoading.value = false
 
             } catch (e: Exception) {
-                showErrorMessage.postValue(e.localizedMessage)
-                showLoading.postValue(false)
+                showErrorMessage.postValue("Expected voter details are not found")
+                Timber.e(e)
+                showLoading.value = false
             }
         }
     }
 
-    fun updateElectionState() {
+    fun updateElectionSavedState() {
         viewModelScope.launch {
             election.value?.let { data ->
                 repository.updateElectionState(electionID = data.id, isSaved = data.isSaved.not())
@@ -60,14 +67,5 @@ class VoterInfoViewModel(
             }
         }
     }
-
-    //TODO: Add var and methods to support loading URLs
-
-    //TODO: Add var and methods to save and remove elections to local database
-    //TODO: cont'd -- Populate initial state of save button to reflect proper action based on election saved status
-
-    /**
-     * Hint: The saved state can be accomplished in multiple ways. It is directly related to how elections are saved/removed from the database.
-     */
 
 }

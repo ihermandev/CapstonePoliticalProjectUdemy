@@ -15,4 +15,12 @@
     <!--    Voter Info Screen-->
     <string name="save_action">Save</string>
     <string name="remove_action">Remove</string>
+    <string name="permission_denied_explanation">You need to grant location permission in order to detect nearest address</string>
+    <string name="settings">Settings</string>
+    <string name="location_required_error">Location services must be enabled to use the app</string>
+    <string name="voting_location">&lt;a href="%s">All voting locations&lt;/a></string>
+    <string name="ballot_info">&lt;a href="%s">Ballot info&lt;/a></string>
+    <string name="voting_location_info">&lt;a href="%s">Voting location finder&lt;/a></string>
+    <string name="check_info_in_web">Check info in WEB:</string>
+    <string name="address_label">Address</string>
 </resources>

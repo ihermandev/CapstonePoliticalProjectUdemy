@@ -1,5 +1,6 @@
 package com.example.android.politicalpreparedness.util
 
+import android.os.Build
 import android.view.View
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
@@ -10,6 +11,12 @@ import com.example.android.politicalpreparedness.data.domain.ElectionDomain
 import com.example.android.politicalpreparedness.election.adapter.ElectionListAdapter
 import java.text.SimpleDateFormat
 import java.util.*
+import android.text.Html
+
+import android.text.Spanned
+import androidx.lifecycle.LiveData
+import com.example.android.politicalpreparedness.data.network.models.State
+
 
 object BindingAdapters {
 
@@ -57,5 +64,41 @@ object BindingAdapters {
         count?.let {
             if (it > 0) view.visible() else view.gone()
         } ?: view.gone()
+    }
+
+    @BindingAdapter("android:isStateAvailable")
+    @JvmStatic
+    fun bindStateAvailability(view: View, data: LiveData<State>?) {
+        data?.value?.let {
+            view.visible()
+        } ?: view.gone()
+    }
+
+    @BindingAdapter("android:fadeVisible")
+    @JvmStatic
+    fun setFadeVisible(view: View, visible: Boolean? = true) {
+        if (view.tag == null) {
+            view.tag = true
+            view.visibility = if (visible == true) View.VISIBLE else View.GONE
+        } else {
+            view.animate().cancel()
+            if (visible == true) {
+                if (view.visibility == View.GONE)
+                    view.fadeIn()
+            } else {
+                if (view.visibility == View.VISIBLE)
+                    view.fadeOut()
+            }
+        }
+    }
+
+    @BindingAdapter("android:htmlText")
+    @JvmStatic
+    fun setHtmlTextValue(textView: TextView, htmlText: String?) {
+        htmlText?.let {
+            val result: Spanned =
+                Html.fromHtml(it, Html.FROM_HTML_MODE_LEGACY)
+            textView.text = result
+        } ?: return
     }
 }
