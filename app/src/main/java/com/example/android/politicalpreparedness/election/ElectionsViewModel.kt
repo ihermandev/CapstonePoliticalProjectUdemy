@@ -13,8 +13,12 @@ class ElectionsViewModel(
     private val repository: ElectionRepository,
 ) : BaseViewModel(app) {
 
-    val elections = repository.elections
-    val savedElections = repository.savedElections
+    private val _elections = repository.elections
+    val elections
+        get() = _elections
+    private val _savedElections = repository.savedElections
+    val savedElections
+        get() = _savedElections
 
     fun forceUpdateElectionsData() {
         showLoading.value = true
