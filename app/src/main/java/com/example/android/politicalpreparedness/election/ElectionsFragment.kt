@@ -1,17 +1,19 @@
 package com.example.android.politicalpreparedness.election
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.edit
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import com.example.android.politicalpreparedness.R
 import com.example.android.politicalpreparedness.base.BaseFragment
-import com.example.android.politicalpreparedness.base.BaseViewModel
 import com.example.android.politicalpreparedness.databinding.FragmentElectionBinding
 import com.example.android.politicalpreparedness.election.adapter.ElectionListAdapter
 import com.example.android.politicalpreparedness.election.adapter.ElectionListener
+import com.example.android.politicalpreparedness.util.Const.FIRST_TIME_FLOW
+import com.example.android.politicalpreparedness.util.getSharedPref
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ElectionsFragment : BaseFragment() {
@@ -34,9 +36,10 @@ class ElectionsFragment : BaseFragment() {
 
         setupRecyclerView(binding)
 
-        binding.srlUpcoming.setOnRefreshListener {
-            _viewModel.updateElectionsData()
-        }
+        checkFirstTimeUserFlow()
+
+        setupViewListeners(binding)
+
 
         //TODO: Add binding values
 
@@ -49,13 +52,36 @@ class ElectionsFragment : BaseFragment() {
         return binding.root
     }
 
+    private fun setupViewListeners(binding: FragmentElectionBinding) {
+        binding.srlUpcoming.setOnRefreshListener {
+            _viewModel.updateElectionsData()
+        }
+    }
+
+    private fun checkFirstTimeUserFlow() {
+        activity?.getSharedPref()?.let { pref ->
+            if (pref.getBoolean(FIRST_TIME_FLOW, true)) {
+                _viewModel.forceUpdateElectionsData()
+                pref.edit {
+                    putBoolean(FIRST_TIME_FLOW, false)
+                    commit()
+                    apply()
+                }
+            } else {
+                _viewModel.updateElectionsData()
+            }
+        } ?: _viewModel.updateElectionsData()
+    }
+
     private fun setupRecyclerView(binding: FragmentElectionBinding) {
         binding.rvUpcoming.adapter =
             ElectionListAdapter(clickListener = ElectionListener {
-                _viewModel.showSnackBar.postValue(it.toString())
+                _viewModel.navigateToVoterInfo(it)
+            })
+
+        binding.rvSaved.adapter =
+            ElectionListAdapter(clickListener = ElectionListener {
+                _viewModel.navigateToVoterInfo(it)
             })
     }
-
-    //TODO: Refresh adapters when fragment loads
-
 }

@@ -27,13 +27,18 @@ class ElectionLocalDataSourceImpl(
         return electionDao.getElections()
     }
 
-//    override suspend fun getElections(): Result<List<Election>> = withContext(ioDispatcher) {
-//        return@withContext try {
-//            Result.Success(electionDao.getElections())
-//        } catch (e: Exception) {
-//            Result.Error(e.localizedMessage)
-//        }
-//    }
+    override suspend fun getSavedElections(): Result<List<Election>> = withContext(ioDispatcher) {
+        try {
+            val election = electionDao.getSavedElections()
+            if (election.isNotEmpty()) {
+                return@withContext Result.Success(election)
+            } else {
+                return@withContext Result.Error(Exception("Saved elections not found!"))
+            }
+        } catch (e: Exception) {
+            return@withContext Result.Error(e)
+        }
+    }
 
     override suspend fun getElectionById(id: Int): Result<Election> = withContext(ioDispatcher) {
         try {
@@ -48,6 +53,17 @@ class ElectionLocalDataSourceImpl(
         }
     }
 
+    override suspend fun updateElectionState(id: Int, isSaved: Boolean) {
+        withContext(ioDispatcher) {
+            electionDao.updateElectionState(id = id, isSaved = isSaved)
+        }
+    }
+
+    suspend fun updateDataSaveState(elections: List<Election>) {
+        withContext(ioDispatcher) {
+
+        }
+    }
 
     override suspend fun deleteElection(election: Election) {
         withContext(ioDispatcher) {

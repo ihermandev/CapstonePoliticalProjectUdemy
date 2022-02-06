@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Political Preparedness</string>
-<!--    Launch Screen-->
+    <!--    Launch Screen-->
     <string name="launch_screen_logo">Launch screen logo</string>
     <string name="upcoming_elections">Upcoming Elections</string>
     <string name="find_my_representatives">Find my representatives</string>
-<!--    Representative Screen-->
+    <!--    Representative Screen-->
     <string name="representative_avatar">Representative Avatar</string>
     <string name="representative_fb">%s facebook page</string>
     <string name="representative_twitter">%s twitted</string>
     <string name="representative_www">%s www page</string>
-<!--    Elections Screen-->
+    <!--    Elections Screen-->
     <string name="saved_elections">Saved Elections</string>
-
+    <!--    Voter Info Screen-->
+    <string name="save_action">Save</string>
+    <string name="remove_action">Remove</string>
 </resources>

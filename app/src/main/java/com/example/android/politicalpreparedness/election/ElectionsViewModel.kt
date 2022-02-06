@@ -1,15 +1,15 @@
 package com.example.android.politicalpreparedness.election
 
 import android.app.Application
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.android.politicalpreparedness.base.BaseViewModel
+import com.example.android.politicalpreparedness.base.NavigationCommand
 import com.example.android.politicalpreparedness.data.repository.ElectionRepository
 import kotlinx.coroutines.launch
-import com.example.android.politicalpreparedness.data.Result
+import com.example.android.politicalpreparedness.data.domain.ElectionDomain
 
 class ElectionsViewModel(
-    private val app: Application,
+    app: Application,
     private val repository: ElectionRepository,
 ) : BaseViewModel(app) {
 
@@ -20,8 +20,25 @@ class ElectionsViewModel(
     val savedElections = repository.savedElections
 
 
+  //  private val _dataLoading = MutableLiveData(false)
+  // val dataLoading: LiveData<Boolean> = _dataLoading
+
+
     init {
-       // updateElectionsData()
+        // updateElectionsData()
+    }
+
+    fun forceUpdateElectionsData() {
+        showLoading.value = true
+        viewModelScope.launch {
+            try {
+                repository.forceUpdateElectionsData()
+                showLoading.value = false
+            } catch (e: Exception) {
+                showErrorMessage.postValue(e.localizedMessage)
+                showLoading.value = false
+            }
+        }
     }
 
     fun updateElectionsData() {
@@ -29,17 +46,33 @@ class ElectionsViewModel(
         viewModelScope.launch {
             try {
                 repository.updateElectionsData()
-                showLoading.postValue(false)
+                showLoading.value = false
             } catch (e: Exception) {
-                showLoading.postValue(false)
                 showErrorMessage.postValue(e.localizedMessage)
+                showLoading.value = false
             }
         }
     }
+
+    fun getVoterInfo(electionId: Int, address: String) {
+        showLoading.value = true
+    }
+
 
 
     //TODO: Create val and functions to populate live data for upcoming elections from the API and saved elections from local database
 
     //TODO: Create functions to navigate to saved or upcoming election voter info
+
+    fun navigateToVoterInfo(election: ElectionDomain) {
+        navigationCommand.postValue(
+            NavigationCommand.To(
+                ElectionsFragmentDirections.actionElectionsFragmentToVoterInfoFragment(
+                    election.id,
+                    election.division
+                )
+            )
+        )
+    }
 
 }

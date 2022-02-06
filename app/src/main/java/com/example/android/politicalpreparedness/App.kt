@@ -9,6 +9,7 @@ import com.example.android.politicalpreparedness.data.network.CivicsApiService
 import com.example.android.politicalpreparedness.data.network.ElectionNetworkDataSourceImpl
 import com.example.android.politicalpreparedness.data.repository.ElectionRepository
 import com.example.android.politicalpreparedness.election.ElectionsViewModel
+import com.example.android.politicalpreparedness.election.VoterInfoViewModel
 import kotlinx.coroutines.Dispatchers
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -47,6 +48,7 @@ class App : Application() {
                 )
             }
             viewModel { ElectionsViewModel(get(), get() as ElectionRepository) }
+            viewModel { VoterInfoViewModel(get(), get() as ElectionRepository) }
         }
 
         startKoin {

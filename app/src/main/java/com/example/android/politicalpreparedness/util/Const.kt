@@ -14,4 +14,7 @@ object Const {
     const val GET_ELECTIONS = "elections"
     const val GET_VOTERINFO = "voterinfo"
     const val GET_REPRESENTATIVES = "representatives"
+
+    //Preferences
+    const val FIRST_TIME_FLOW = "FIRST_TIME_FLOW"
 }

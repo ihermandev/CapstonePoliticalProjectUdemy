@@ -17,8 +17,14 @@ interface ElectionDao {
     @Query("SELECT * FROM $ELECTION_TABLE_NAME ORDER BY electionDay ASC")
     fun getElections(): LiveData<List<Election>>
 
+    @Query("SELECT * FROM $ELECTION_TABLE_NAME  where isSaved = 1")
+    suspend fun getSavedElections(): List<Election>
+
     @Query("SELECT * FROM $ELECTION_TABLE_NAME where id = :id")
     suspend fun getElectionById(id: Int): Election?
+
+    @Query("UPDATE $ELECTION_TABLE_NAME SET isSaved  = :isSaved WHERE id = :id")
+    suspend fun updateElectionState(id: Int, isSaved: Boolean)
 
     @Delete
     suspend fun deleteElection(election: Election)

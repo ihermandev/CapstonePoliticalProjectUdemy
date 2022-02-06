@@ -12,7 +12,11 @@ interface ElectionLocalDataSource {
 
     fun getElections(): LiveData<List<Election>>
 
+    suspend fun getSavedElections(): Result<List<Election>>
+
     suspend fun getElectionById(id: Int): Result<Election>
+
+    suspend fun updateElectionState(id: Int, isSaved: Boolean)
 
     suspend fun deleteElection(election: Election)
 
