@@ -13,20 +13,8 @@ class ElectionsViewModel(
     private val repository: ElectionRepository,
 ) : BaseViewModel(app) {
 
-    //TODO: Create live data val for upcoming elections
     val elections = repository.elections
-
-    //TODO: Create live data val for saved elections
     val savedElections = repository.savedElections
-
-
-  //  private val _dataLoading = MutableLiveData(false)
-  // val dataLoading: LiveData<Boolean> = _dataLoading
-
-
-    init {
-        // updateElectionsData()
-    }
 
     fun forceUpdateElectionsData() {
         showLoading.value = true
@@ -57,12 +45,6 @@ class ElectionsViewModel(
     fun getVoterInfo(electionId: Int, address: String) {
         showLoading.value = true
     }
-
-
-
-    //TODO: Create val and functions to populate live data for upcoming elections from the API and saved elections from local database
-
-    //TODO: Create functions to navigate to saved or upcoming election voter info
 
     fun navigateToVoterInfo(election: ElectionDomain) {
         navigationCommand.postValue(

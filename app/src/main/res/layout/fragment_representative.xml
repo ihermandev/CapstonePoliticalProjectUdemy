@@ -6,7 +6,7 @@
     <!-- TODO: Add data binding node -->
 
     <!-- TODO: Add motion scene to hide form on vertical scroll. -->
-    <androidx.constraintlayout.motion.widget.MotionLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_height="match_parent"
         android:layout_width="match_parent">
 
@@ -115,5 +115,5 @@
             app:layout_constraintTop_toBottomOf="@id/tvRepresentativeTitle"
             app:layout_constraintBottom_toBottomOf="parent" />
 
-    </androidx.constraintlayout.motion.widget.MotionLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

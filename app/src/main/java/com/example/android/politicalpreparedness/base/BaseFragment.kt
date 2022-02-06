@@ -1,4 +1,5 @@
 package com.example.android.politicalpreparedness.base
+
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -22,11 +23,16 @@ abstract class BaseFragment : Fragment() {
         _viewModel.showToast.observe(this, Observer {
             Toast.makeText(activity, it, Toast.LENGTH_LONG).show()
         })
-        _viewModel.showSnackBar.observe(this, Observer {
-            Snackbar.make(this.view!!, it, Snackbar.LENGTH_LONG).show()
+        _viewModel.showSnackBar.observe(this, Observer { text ->
+            view?.let { v ->
+                Snackbar.make(v, text, Snackbar.LENGTH_LONG).show()
+            }
+
         })
-        _viewModel.showSnackBarInt.observe(this, Observer {
-            Snackbar.make(this.view!!, getString(it), Snackbar.LENGTH_LONG).show()
+        _viewModel.showSnackBarInt.observe(this, Observer { resId ->
+            view?.let { v ->
+                Snackbar.make(v, getString(resId), Snackbar.LENGTH_LONG).show()
+            }
         })
 
         _viewModel.navigationCommand.observe(this, Observer { command ->

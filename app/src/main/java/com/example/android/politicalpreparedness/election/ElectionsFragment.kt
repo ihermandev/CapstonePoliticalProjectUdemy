@@ -30,7 +30,6 @@ class ElectionsFragment : BaseFragment() {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_election, container, false)
 
-        //TODO: Add ViewModel values and create ViewModel
         binding.viewModel = _viewModel
         binding.lifecycleOwner = this
 
@@ -39,15 +38,6 @@ class ElectionsFragment : BaseFragment() {
         checkFirstTimeUserFlow()
 
         setupViewListeners(binding)
-
-
-        //TODO: Add binding values
-
-        //TODO: Link elections to voter info
-
-        //TODO: Initiate recycler adapters
-
-        //TODO: Populate recycler adapters
 
         return binding.root
     }
