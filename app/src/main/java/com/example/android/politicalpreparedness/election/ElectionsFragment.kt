@@ -1,6 +1,5 @@
 package com.example.android.politicalpreparedness.election
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +14,6 @@ import com.example.android.politicalpreparedness.election.adapter.ElectionListen
 import com.example.android.politicalpreparedness.util.Const.FIRST_TIME_FLOW
 import com.example.android.politicalpreparedness.util.getSharedPref
 import com.example.android.politicalpreparedness.util.isNetworkAvailable
-import com.example.android.politicalpreparedness.util.showToast
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ElectionsFragment : BaseFragment() {
@@ -28,7 +26,7 @@ class ElectionsFragment : BaseFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_election, container, false)
 

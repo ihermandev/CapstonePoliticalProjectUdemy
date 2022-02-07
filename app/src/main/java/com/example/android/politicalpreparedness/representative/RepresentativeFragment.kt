@@ -75,7 +75,7 @@ class RepresentativeFragment : BaseFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_representative, container, false)
 
@@ -129,7 +129,7 @@ class RepresentativeFragment : BaseFragment() {
         _viewModel.showLoading.observe(viewLifecycleOwner, Observer { isLoading ->
             if (isLoading) {
                 hideKeyboard()
-                binding.progressBar.visibility = View.VISIBLE
+                binding.progressBar.fadeIn()
             } else {
                 binding.progressBar.fadeOut()
             }
