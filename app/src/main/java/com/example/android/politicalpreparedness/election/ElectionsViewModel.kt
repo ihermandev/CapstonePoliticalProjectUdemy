@@ -50,8 +50,7 @@ class ElectionsViewModel(
         navigationCommand.postValue(
             NavigationCommand.To(
                 ElectionsFragmentDirections.actionElectionsFragmentToVoterInfoFragment(
-                    election.id,
-                    election.division
+                    election.id
                 )
             )
         )

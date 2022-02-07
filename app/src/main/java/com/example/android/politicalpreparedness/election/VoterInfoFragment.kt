@@ -39,10 +39,6 @@ class VoterInfoFragment : BaseFragment() {
         VoterInfoFragmentArgs.fromBundle(requireArguments()).argElectionId
     }
 
-    private val electionDivision by lazy {
-        VoterInfoFragmentArgs.fromBundle(requireArguments()).argDivision
-    }
-
     @SuppressLint("MissingPermission")
     private val requestPermissionLauncher =
         registerForActivityResult(
@@ -73,8 +69,6 @@ class VoterInfoFragment : BaseFragment() {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_voter_info, container, false)
 
-//        val electionID =
-//        val electionDivision = VoterInfoFragmentArgs.fromBundle(requireArguments()).argDivision
         binding.viewModel = _viewModel
         binding.lifecycleOwner = this
 
@@ -87,26 +81,6 @@ class VoterInfoFragment : BaseFragment() {
             _viewModel.getElectionById(electionID)
         }
 
-
-//        _viewModel.election.observe(viewLifecycleOwner, Observer {
-//            _viewModel.showSnackBar.postValue(it.toString())
-//        }
-//        )
-
-        //TODO: Add ViewModel values and create ViewModel
-
-        //TODO: Add binding values
-
-        //TODO: Populate voter info -- hide views without provided data.
-        /**
-        Hint: You will need to ensure proper data is provided from previous fragment.
-         */
-
-
-        //TODO: Handle loading of URLs
-
-        //TODO: Handle save button UI state
-        //TODO: cont'd Handle save button clicks
         return binding.root
     }
 
