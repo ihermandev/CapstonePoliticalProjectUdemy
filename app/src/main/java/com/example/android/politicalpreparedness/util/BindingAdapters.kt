@@ -103,6 +103,14 @@ object BindingAdapters {
         }
     }
 
+    @BindingAdapter("android:checkIfVisible")
+    @JvmStatic
+    fun setSimpleVisible(view: View, visible: Boolean? = true) {
+        visible?.let {
+            if (it) view.visible() else view.gone()
+        } ?: return
+    }
+
     @BindingAdapter("android:htmlText")
     @JvmStatic
     fun setHtmlTextValue(textView: TextView, htmlText: String?) {

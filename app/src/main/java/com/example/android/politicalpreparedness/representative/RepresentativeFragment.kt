@@ -29,6 +29,8 @@ import com.example.android.politicalpreparedness.databinding.FragmentRepresentat
 import com.example.android.politicalpreparedness.election.VoterInfoFragment
 import com.example.android.politicalpreparedness.representative.adapter.RepresentativeListAdapter
 import com.example.android.politicalpreparedness.representative.adapter.RepresentativeListener
+import com.example.android.politicalpreparedness.util.fadeIn
+import com.example.android.politicalpreparedness.util.fadeOut
 import com.example.android.politicalpreparedness.util.showToast
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -87,13 +89,11 @@ class RepresentativeFragment : BaseFragment() {
 
         locationSnackBar = initLocationSnackbar(binding)
 
-
         initViewListeners(binding)
         initRecyclerView(binding)
-        observeLiveData()
+        observeLiveData(binding)
 
         binding.executePendingBindings()
-
     }
 
     private fun initViewListeners(binding: FragmentRepresentativeBinding) {
@@ -114,9 +114,16 @@ class RepresentativeFragment : BaseFragment() {
         }
     }
 
-    private fun observeLiveData() {
+    private fun observeLiveData(binding: FragmentRepresentativeBinding) {
+        //Temporary avoid direct databinding for motion layout because of strange issue
+        //https://stackoverflow.com/questions/66676986/motionlayout-and-data-binding
         _viewModel.showLoading.observe(viewLifecycleOwner, Observer { isLoading ->
-            if (isLoading) hideKeyboard()
+            if (isLoading) {
+                hideKeyboard()
+                binding.progressBar.visibility = View.VISIBLE
+            } else {
+                binding.progressBar.fadeOut()
+            }
         })
     }
 
