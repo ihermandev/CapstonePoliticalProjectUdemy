@@ -155,6 +155,6 @@ dependencies {
     debugImplementation "androidx.fragment:fragment-testing:$version_fragment"
     implementation "androidx.test:core:$version_androidx_test_core"
 
-    androidTestImplementation 'androidx.test:runner:1.3.0'
-    androidTestUtil 'androidx.test:orchestrator:1.3.0'
+    androidTestImplementation "androidx.test:runner:$version_test_runner"
+    androidTestUtil "androidx.test:orchestrator:$version_test_runner"
 }
