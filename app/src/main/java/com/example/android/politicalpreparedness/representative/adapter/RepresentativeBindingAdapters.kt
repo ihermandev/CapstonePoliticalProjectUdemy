@@ -36,6 +36,7 @@ fun Spinner.setNewValue(value: String?) {
     } ?: return
 }
 
+@Suppress("UNCHECKED_CAST")
 inline fun <reified T> toTypedAdapter(adapter: ArrayAdapter<*>): ArrayAdapter<T> {
     return adapter as ArrayAdapter<T>
 }
