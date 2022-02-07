@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.Geocoder
+import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
@@ -39,6 +40,12 @@ class VoterInfoFragment : BaseFragment() {
         VoterInfoFragmentArgs.fromBundle(requireArguments()).argElectionId
     }
 
+    private var locationSnackBar: Snackbar? = null
+
+    private val fusedLocationClient: FusedLocationProviderClient by lazy {
+        LocationServices.getFusedLocationProviderClient(requireActivity())
+    }
+
     @SuppressLint("MissingPermission")
     private val requestPermissionLauncher =
         registerForActivityResult(
@@ -53,13 +60,6 @@ class VoterInfoFragment : BaseFragment() {
                 showLocationPermissionSnackbar()
             }
         }
-
-
-    private var locationSnackBar: Snackbar? = null
-
-    private val fusedLocationClient: FusedLocationProviderClient by lazy {
-        LocationServices.getFusedLocationProviderClient(requireActivity())
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -118,9 +118,7 @@ class VoterInfoFragment : BaseFragment() {
             .addOnSuccessListener { loc ->
                 loc?.let {
                     try {
-                        val requiredAddress =
-                            Geocoder(requireContext()).getFromLocation(it.latitude,
-                                it.longitude, 1).firstOrNull()
+                        val requiredAddress = getRequiredLocation(it)
                         val stringAddress = "${requiredAddress?.getAddressLine(0)}"
                         Timber.i("Detected user string address $stringAddress")
                         _viewModel.getVoterInfo(electionId = electionID, stringAddress)
@@ -131,6 +129,10 @@ class VoterInfoFragment : BaseFragment() {
                 }
             }
     }
+
+    private fun getRequiredLocation(it: Location) =
+        Geocoder(requireContext()).getFromLocation(it.latitude,
+            it.longitude, 1).firstOrNull()
 
     private fun checkDeviceLocationSettingsAndGetUserAddress(
         resolve: Boolean = true,

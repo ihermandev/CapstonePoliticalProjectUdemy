@@ -11,7 +11,6 @@
     </data>
 
 
-    <!-- TODO: Add motion scene to hide form on vertical scroll. -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
@@ -41,6 +40,7 @@
 
         <EditText
             android:id="@+id/address_line_1"
+            style="@style/ContentTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/padding_default"
@@ -55,6 +55,7 @@
 
         <EditText
             android:id="@+id/address_line_2"
+            style="@style/ContentTextStyle"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginStart="@dimen/padding_default"
@@ -69,6 +70,7 @@
 
         <EditText
             android:id="@+id/city"
+            style="@style/ContentTextStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/padding_default"
@@ -83,6 +85,7 @@
 
         <Spinner
             android:id="@+id/state"
+            style="@style/ContentTextStyle"
             stateValue="@{viewModel.state}"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -96,6 +99,7 @@
 
         <EditText
             android:id="@+id/zip"
+            style="@style/ContentTextStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/padding_default"
@@ -126,6 +130,13 @@
             android:text="@string/use_loc"
             app:layout_constraintTop_toBottomOf="@id/button_search" />
 
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/representative_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:isVisible="@{viewModel.representative.size()}"
+            app:constraint_referenced_ids="tvRepresentativeTitle,rvRepresentative,divider2" />
+
         <TextView
             android:id="@+id/tvRepresentativeTitle"
             style="@style/HeaderTextStyle"
@@ -138,10 +149,24 @@
             app:layout_constraintTop_toBottomOf="@id/button_location" />
 
         <View
+            android:id="@+id/divider2"
             style="@style/Divider"
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/padding_default"
             android:layout_marginEnd="@dimen/padding_default"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvRepresentativeTitle" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_default"
+            android:fadeVisible="@{viewModel.showLoading.booleanValue()}"
+            android:gravity="center"
+            android:indeterminateTint="?colorPrimary"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvRepresentativeTitle" />
@@ -157,6 +182,5 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvRepresentativeTitle" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

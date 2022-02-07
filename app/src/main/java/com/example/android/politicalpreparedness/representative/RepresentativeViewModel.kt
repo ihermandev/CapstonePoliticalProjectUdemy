@@ -39,7 +39,6 @@ class RepresentativeViewModel(
     }
 
     fun validateAndSearchRepresentatives() {
-
         val address = Address(
             line1 = addressLine1.value,
             line2 = addressLine2.value,
@@ -48,6 +47,17 @@ class RepresentativeViewModel(
             zip = zipCode.value
         )
 
+        if (validateEnteredData(address)) {
+            searchRepresentatives(address)
+        }
+    }
+
+    fun validateAndSearchRepresentativesForLocation(address: Address) {
+        addressLine1.value = address.line1
+        addressLine2.value = address.line2
+        city.value = address.city
+        state.value = address.state
+        zipCode.value = address.zip
         if (validateEnteredData(address)) {
             searchRepresentatives(address)
         }
