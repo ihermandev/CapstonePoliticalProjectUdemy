@@ -1,6 +1,7 @@
 package com.example.android.politicalpreparedness.election
 
 import android.app.Application
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.example.android.politicalpreparedness.base.BaseViewModel
 import com.example.android.politicalpreparedness.base.NavigationCommand
@@ -14,10 +15,10 @@ class ElectionsViewModel(
 ) : BaseViewModel(app) {
 
     private val _elections = repository.elections
-    val elections
+    val elections: LiveData<List<ElectionDomain>>
         get() = _elections
     private val _savedElections = repository.savedElections
-    val savedElections
+    val savedElections: LiveData<List<ElectionDomain>>
         get() = _savedElections
 
     fun forceUpdateElectionsData() {

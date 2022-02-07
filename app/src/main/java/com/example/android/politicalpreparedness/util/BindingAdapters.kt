@@ -16,6 +16,8 @@ import android.text.Html
 import android.text.Spanned
 import androidx.lifecycle.LiveData
 import com.example.android.politicalpreparedness.data.network.models.State
+import com.example.android.politicalpreparedness.representative.adapter.RepresentativeListAdapter
+import com.example.android.politicalpreparedness.representative.model.Representative
 
 
 object BindingAdapters {
@@ -30,9 +32,18 @@ object BindingAdapters {
 
     @BindingAdapter("android:electionData")
     @JvmStatic
-    fun bindRecyclerView(recyclerView: RecyclerView, data: List<ElectionDomain>?) {
+    fun bindElectionRecyclerView(recyclerView: RecyclerView, data: List<ElectionDomain>?) {
         data?.let {
             val adapter = recyclerView.adapter as ElectionListAdapter
+            adapter.submitList(it)
+        } ?: return
+    }
+
+    @BindingAdapter("android:representativeData")
+    @JvmStatic
+    fun bindRepresentativeRecyclerView(recyclerView: RecyclerView, data: List<Representative>?) {
+        data?.let {
+            val adapter = recyclerView.adapter as RepresentativeListAdapter
             adapter.submitList(it)
         } ?: return
     }

@@ -1,6 +1,7 @@
 package com.example.android.politicalpreparedness.representative
 
 import android.app.Application
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.android.politicalpreparedness.R
@@ -22,8 +23,8 @@ class RepresentativeViewModel(
     val state = MutableLiveData<String>()
     val zipCode = MutableLiveData<String>()
 
-    private val _representatives = MutableLiveData<Representative>()
-    val representative
+    private val _representatives = MutableLiveData<List<Representative>>()
+    val representative: LiveData<List<Representative>>
         get() = _representatives
 
     /**
@@ -38,6 +39,7 @@ class RepresentativeViewModel(
     }
 
     fun validateAndSearchRepresentatives() {
+
         val address = Address(
             line1 = addressLine1.value,
             line2 = addressLine2.value,
@@ -55,13 +57,19 @@ class RepresentativeViewModel(
         showLoading.value = true
         viewModelScope.launch {
             try {
-                repository.searchRepresentatives(address)
+                _representatives.value = repository.searchRepresentatives(address)
                 showLoading.value = false
             } catch (e: Exception) {
                 showErrorMessage.postValue("Expected representatives are not found")
                 Timber.e(e)
                 showLoading.value = false
             }
+        }
+    }
+
+    fun setState(stateName: String?) {
+        if (!stateName.isNullOrEmpty()) {
+            state.value = stateName
         }
     }
 

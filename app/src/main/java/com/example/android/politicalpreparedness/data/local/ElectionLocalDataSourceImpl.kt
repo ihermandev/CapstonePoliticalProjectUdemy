@@ -59,12 +59,6 @@ class ElectionLocalDataSourceImpl(
         }
     }
 
-    suspend fun updateDataSaveState(elections: List<Election>) {
-        withContext(ioDispatcher) {
-
-        }
-    }
-
     override suspend fun deleteElection(election: Election) {
         withContext(ioDispatcher) {
             electionDao.deleteElection(election)

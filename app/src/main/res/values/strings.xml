@@ -23,9 +23,16 @@
     <string name="voting_location_info">&lt;a href="%s">Voting location finder&lt;/a></string>
     <string name="check_info_on_web">Check info on WEB:</string>
     <string name="address_label">Address</string>
-<!--    Representative Screen-->
+    <!--    Representative Screen-->
     <string name="err_line1">Please enter address</string>
     <string name="err_city">Please enter city</string>
     <string name="err_state">Please enter state</string>
     <string name="err_zip">Please enter zip code</string>
+    <string name="representative_search">Representative Search</string>
+    <string name="address_line_1_label">Address Line 1</string>
+    <string name="address_line_2_label">Address Line 2</string>
+    <string name="city_label">City</string>
+    <string name="zip_code_label">Zip code</string>
+    <string name="my_representatives_label">My representatives</string>
+    <string name="use_loc">Use My Location</string>
 </resources>
