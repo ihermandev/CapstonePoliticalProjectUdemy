@@ -12,7 +12,7 @@
         <OnSwipe
             app:dragDirection="dragUp"
             app:onTouchUp="autoComplete"
-            app:touchAnchorId="@id/tvRepresentativeTitle"
+            app:touchAnchorId="@id/rvRepresentative"
             app:touchAnchorSide="top" />
 
         <KeyFrameSet>

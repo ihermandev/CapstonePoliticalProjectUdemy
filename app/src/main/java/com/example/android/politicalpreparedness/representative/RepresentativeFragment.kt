@@ -31,6 +31,7 @@ import com.example.android.politicalpreparedness.representative.adapter.Represen
 import com.example.android.politicalpreparedness.representative.adapter.RepresentativeListener
 import com.example.android.politicalpreparedness.util.fadeIn
 import com.example.android.politicalpreparedness.util.fadeOut
+import com.example.android.politicalpreparedness.util.isNetworkAvailable
 import com.example.android.politicalpreparedness.util.showToast
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -110,7 +111,15 @@ class RepresentativeFragment : BaseFragment() {
         }
 
         binding.buttonLocation.setOnClickListener {
-            getUserLocation()
+            if (isNetworkAvailable(requireContext())) {
+                getUserLocation()
+            } else _viewModel.showNetworkError()
+        }
+
+        binding.buttonSearch.setOnClickListener {
+            if (isNetworkAvailable(requireContext())) {
+                _viewModel.validateAndSearchRepresentatives()
+            } else _viewModel.showNetworkError()
         }
     }
 

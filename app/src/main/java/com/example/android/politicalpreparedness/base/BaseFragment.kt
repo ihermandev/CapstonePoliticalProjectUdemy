@@ -4,6 +4,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.example.android.politicalpreparedness.R
 import com.google.android.material.snackbar.Snackbar
 
 /**

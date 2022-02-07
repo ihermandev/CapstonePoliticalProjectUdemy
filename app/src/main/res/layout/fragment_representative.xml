@@ -127,7 +127,6 @@
                 style="@style/LaunchScreenButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.validateAndSearchRepresentatives()}"
                 android:text="@string/find_my_representatives"
                 app:layout_constraintTop_toBottomOf="@id/zip" />
 

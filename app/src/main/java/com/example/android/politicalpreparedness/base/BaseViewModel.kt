@@ -3,6 +3,7 @@ package com.example.android.politicalpreparedness.base
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import com.example.android.politicalpreparedness.R
 import com.example.android.politicalpreparedness.util.SingleLiveEvent
 
 /**
@@ -16,4 +17,9 @@ abstract class BaseViewModel(app: Application) : AndroidViewModel(app) {
     val showToast: SingleLiveEvent<String> = SingleLiveEvent()
     val showNoData: MutableLiveData<Boolean> = MutableLiveData()
     val showLoading: MutableLiveData<Boolean> = MutableLiveData(false)
+
+    fun showNetworkError() {
+        showSnackBarInt.value = R.string.connection_error
+        showLoading.value = false
+    }
 }

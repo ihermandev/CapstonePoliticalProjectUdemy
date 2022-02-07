@@ -16,7 +16,6 @@ class RepresentativeViewModel(
     app: Application,
     private val repository: ElectionRepository,
 ) : BaseViewModel(app) {
-
     val addressLine1 = MutableLiveData<String>()
     val addressLine2 = MutableLiveData<String>()
     val city = MutableLiveData<String>()
@@ -26,17 +25,6 @@ class RepresentativeViewModel(
     private val _representatives = MutableLiveData<List<Representative>>()
     val representative: LiveData<List<Representative>>
         get() = _representatives
-
-    /**
-     * Clear the live data objects to start fresh next time the view model gets called
-     */
-    fun onClear() {
-        addressLine1.value = null
-        addressLine2.value = null
-        city.value = null
-        state.value = null
-        zipCode.value = null
-    }
 
     fun validateAndSearchRepresentatives() {
         val address = Address(

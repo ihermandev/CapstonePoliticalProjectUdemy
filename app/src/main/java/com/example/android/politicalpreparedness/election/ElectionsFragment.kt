@@ -14,6 +14,8 @@ import com.example.android.politicalpreparedness.election.adapter.ElectionListAd
 import com.example.android.politicalpreparedness.election.adapter.ElectionListener
 import com.example.android.politicalpreparedness.util.Const.FIRST_TIME_FLOW
 import com.example.android.politicalpreparedness.util.getSharedPref
+import com.example.android.politicalpreparedness.util.isNetworkAvailable
+import com.example.android.politicalpreparedness.util.showToast
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ElectionsFragment : BaseFragment() {
@@ -44,19 +46,23 @@ class ElectionsFragment : BaseFragment() {
 
     private fun setupViewListeners(binding: FragmentElectionBinding) {
         binding.srlUpcoming.setOnRefreshListener {
-            _viewModel.updateElectionsData()
+            if (isNetworkAvailable(requireContext())) {
+                _viewModel.updateElectionsData()
+            } else _viewModel.showNetworkError()
         }
     }
 
     private fun checkFirstTimeUserFlow() {
         activity?.getSharedPref()?.let { pref ->
             if (pref.getBoolean(FIRST_TIME_FLOW, true)) {
-                _viewModel.forceUpdateElectionsData()
-                pref.edit {
-                    putBoolean(FIRST_TIME_FLOW, false)
-                    commit()
-                    apply()
-                }
+                if (isNetworkAvailable(requireContext())) {
+                    _viewModel.forceUpdateElectionsData()
+                    pref.edit {
+                        putBoolean(FIRST_TIME_FLOW, false)
+                        commit()
+                        apply()
+                    }
+                } else _viewModel.showNetworkError()
             } else {
                 _viewModel.updateElectionsData()
             }

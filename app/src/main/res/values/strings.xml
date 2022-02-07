@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Political Preparedness</string>
+    <string name="connection_error">Check your connection please</string>
     <!--    Launch Screen-->
     <string name="launch_screen_logo">Launch screen logo</string>
     <string name="upcoming_elections">Upcoming Elections</string>
