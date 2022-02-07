@@ -148,6 +148,10 @@ dependencies {
     androidTestImplementation "com.linkedin.dexmaker:dexmaker-mockito:$version_dex_maker"
     androidTestImplementation "io.insert-koin:koin-test:$koin_version"
 
+    implementation "androidx.test.espresso:espresso-idling-resource:$version_espresso"
+
+    testImplementation "org.jetbrains.kotlin:kotlin-test:$version_kotlin"
+
     debugImplementation "androidx.fragment:fragment-testing:$version_fragment"
     implementation "androidx.test:core:$version_androidx_test_core"
 

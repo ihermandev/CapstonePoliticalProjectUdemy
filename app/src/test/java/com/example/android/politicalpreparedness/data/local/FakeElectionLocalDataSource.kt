@@ -1,13 +1,15 @@
-package com.example.android.politicalpreparedness.data
+package com.example.android.politicalpreparedness.data.local
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.android.politicalpreparedness.data.local.ElectionLocalDataSource
+import com.example.android.politicalpreparedness.data.Result
 import com.example.android.politicalpreparedness.data.network.models.Election
-import java.lang.Exception
 
-class FakeTestDataSource(var elections: MutableList<Election>? = mutableListOf()) :
+class FakeElectionLocalDataSource(val elections: MutableList<Election>? = mutableListOf()) :
     ElectionLocalDataSource {
+
+    var shouldReturnError = false
+
     override suspend fun saveElection(election: Election) {
         elections?.add(election)
     }
@@ -17,17 +19,23 @@ class FakeTestDataSource(var elections: MutableList<Election>? = mutableListOf()
     }
 
     override fun getElections(): LiveData<List<Election>> {
-        val liveData = MutableLiveData<List<Election>>()
-        liveData.value = elections
-        return liveData
+        return MutableLiveData(elections)
     }
 
     override suspend fun getSavedElections(): Result<List<Election>> {
-        elections?.filter { it.isSaved }?.let { return Result.Success(it) }
-        return Result.Error(Exception("Elections not found"))
+        if (shouldReturnError) {
+            return Result.Error(Exception("Saved elections not found"))
+        }
+        val data = elections?.filter { it.isSaved }
+        if (data.isNullOrEmpty()) return Result.Error(Exception("Saved elections not found"))
+
+        return Result.Success(data)
     }
 
     override suspend fun getElectionById(id: Int): Result<Election> {
+        if (shouldReturnError) {
+            return Result.Error(Exception("Saved elections not found"))
+        }
         elections?.firstOrNull { it.id == id }?.let { return Result.Success(it) }
         return Result.Error(Exception("Election not found"))
     }
@@ -44,8 +52,11 @@ class FakeTestDataSource(var elections: MutableList<Election>? = mutableListOf()
         elections?.removeIf { item -> item.id == id }
     }
 
-
     override suspend fun deleteAllData() {
         elections?.clear()
+    }
+
+    fun setReturnError(value: Boolean) {
+        shouldReturnError = value
     }
 }

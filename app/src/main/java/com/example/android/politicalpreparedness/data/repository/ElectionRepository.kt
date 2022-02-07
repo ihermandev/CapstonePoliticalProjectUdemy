@@ -4,19 +4,22 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations.map
 import com.example.android.politicalpreparedness.data.Result
 import com.example.android.politicalpreparedness.data.domain.ElectionDomain
+import com.example.android.politicalpreparedness.data.local.ElectionLocalDataSource
 import com.example.android.politicalpreparedness.data.local.ElectionLocalDataSourceImpl
+import com.example.android.politicalpreparedness.data.network.ElectionNetworkDataSource
 import com.example.android.politicalpreparedness.data.network.ElectionNetworkDataSourceImpl
 import com.example.android.politicalpreparedness.data.network.models.Address
 import com.example.android.politicalpreparedness.data.network.models.VoterInfoResponse
 import com.example.android.politicalpreparedness.data.network.models.toDomainModel
 import com.example.android.politicalpreparedness.representative.model.Representative
+import com.example.android.politicalpreparedness.util.wrapEspressoIdlingResource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 class ElectionRepository(
-    private val api: ElectionNetworkDataSourceImpl,
-    private val database: ElectionLocalDataSourceImpl,
+    private val api: ElectionNetworkDataSource,
+    private val database: ElectionLocalDataSource,
 ) {
 
     //Elections
@@ -69,9 +72,11 @@ class ElectionRepository(
     }
 
     suspend fun getElectionById(id: Int): ElectionDomain {
-        return when (val result = database.getElectionById(id)) {
-            is Result.Success -> result.data.toDomainModel()
-            is Result.Error -> throw result.exception
+        wrapEspressoIdlingResource {
+            return when (val result = database.getElectionById(id)) {
+                is Result.Success -> result.data.toDomainModel()
+                is Result.Error -> throw result.exception
+            }
         }
     }
 
@@ -82,23 +87,28 @@ class ElectionRepository(
 
     //Voter Info
     suspend fun getVoterInfo(electionId: Int, address: String): VoterInfoResponse {
-        return when (val result = api.getVoterInfo(address = address, electionId = electionId)) {
-            is Result.Success -> result.data
-            is Result.Error -> throw result.exception
+        wrapEspressoIdlingResource {
+            return when (val result =
+                api.getVoterInfo(address = address, electionId = electionId)) {
+                is Result.Success -> result.data
+                is Result.Error -> throw result.exception
+            }
         }
     }
 
     //Representatives
     suspend fun searchRepresentatives(address: Address): List<Representative> {
-        return when (val result = api.getRepresentatives(address)) {
-            is Result.Success -> {
-                val officials = result.data.officials
-                val offices = result.data.offices.flatMap { office ->
-                    office.getRepresentatives(officials)
+        wrapEspressoIdlingResource {
+            return when (val result = api.getRepresentatives(address)) {
+                is Result.Success -> {
+                    val officials = result.data.officials
+                    val offices = result.data.offices.flatMap { office ->
+                        office.getRepresentatives(officials)
+                    }
+                    offices
                 }
-                offices
+                is Result.Error -> throw result.exception
             }
-            is Result.Error -> throw result.exception
         }
     }
 }
