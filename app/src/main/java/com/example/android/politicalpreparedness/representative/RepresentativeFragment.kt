@@ -20,12 +20,12 @@ import android.widget.AdapterView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import com.example.android.politicalpreparedness.BuildConfig
 import com.example.android.politicalpreparedness.R
 import com.example.android.politicalpreparedness.base.BaseFragment
 import com.example.android.politicalpreparedness.data.network.models.Address
 import com.example.android.politicalpreparedness.databinding.FragmentRepresentativeBinding
-import com.example.android.politicalpreparedness.databinding.FragmentVoterInfoBinding
 import com.example.android.politicalpreparedness.election.VoterInfoFragment
 import com.example.android.politicalpreparedness.representative.adapter.RepresentativeListAdapter
 import com.example.android.politicalpreparedness.representative.adapter.RepresentativeListener
@@ -115,10 +115,9 @@ class RepresentativeFragment : BaseFragment() {
     }
 
     private fun observeLiveData() {
-        _viewModel.showLoading.observe(viewLifecycleOwner,
-            androidx.lifecycle.Observer { isLoading ->
-                if (isLoading) hideKeyboard()
-            })
+        _viewModel.showLoading.observe(viewLifecycleOwner, Observer { isLoading ->
+            if (isLoading) hideKeyboard()
+        })
     }
 
     private fun initRecyclerView(binding: FragmentRepresentativeBinding) {
