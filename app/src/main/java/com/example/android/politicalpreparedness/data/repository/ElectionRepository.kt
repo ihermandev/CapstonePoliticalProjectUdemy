@@ -2,14 +2,14 @@ package com.example.android.politicalpreparedness.data.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations.map
-import androidx.lifecycle.liveData
 import com.example.android.politicalpreparedness.data.Result
 import com.example.android.politicalpreparedness.data.domain.ElectionDomain
 import com.example.android.politicalpreparedness.data.local.ElectionLocalDataSourceImpl
 import com.example.android.politicalpreparedness.data.network.ElectionNetworkDataSourceImpl
-import com.example.android.politicalpreparedness.data.network.models.Election
+import com.example.android.politicalpreparedness.data.network.models.Address
 import com.example.android.politicalpreparedness.data.network.models.VoterInfoResponse
 import com.example.android.politicalpreparedness.data.network.models.toDomainModel
+import com.example.android.politicalpreparedness.representative.model.Representative
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -19,6 +19,7 @@ class ElectionRepository(
     private val database: ElectionLocalDataSourceImpl,
 ) {
 
+    //Elections
     val elections: LiveData<List<ElectionDomain>> = map(database.getElections()) {
         it?.toDomainModel()
     }
@@ -79,6 +80,7 @@ class ElectionRepository(
     }
 
 
+    //Voter Info
     suspend fun getVoterInfo(electionId: Int, address: String): VoterInfoResponse {
         return when (val result = api.getVoterInfo(address = address, electionId = electionId)) {
             is Result.Success -> result.data
@@ -86,11 +88,18 @@ class ElectionRepository(
         }
     }
 
-//    suspend fun getVoterInfoState(electionId: Int, address: String) {
-//        return when (val result = getVoterInfo(address = address, electionId = electionId)) {}
-//    }
-//
-
-
+    //Representatives
+    suspend fun searchRepresentatives(address: Address): List<Representative> {
+        return when (val result = api.getRepresentatives(address)) {
+            is Result.Success -> {
+                val officials = result.data.officials
+                val offices = result.data.offices.flatMap { office ->
+                    office.getRepresentatives(officials)
+                }
+                offices
+            }
+            is Result.Error -> throw result.exception
+        }
+    }
 }
 

@@ -1,6 +1,7 @@
 package com.example.android.politicalpreparedness.data.network
 
 import com.example.android.politicalpreparedness.data.Result
+import com.example.android.politicalpreparedness.data.network.models.Address
 import com.example.android.politicalpreparedness.data.network.models.Election
 import com.example.android.politicalpreparedness.data.network.models.RepresentativeResponse
 import com.example.android.politicalpreparedness.data.network.models.VoterInfoResponse
@@ -33,10 +34,10 @@ class ElectionNetworkDataSourceImpl(
         }
     }
 
-    override suspend fun getRepresentatives(address: String): Result<RepresentativeResponse> =
+    override suspend fun getRepresentatives(address: Address): Result<RepresentativeResponse> =
         withContext(ioDispatcher) {
             return@withContext try {
-                Result.Success(civicsApiService.getRepresentatives(address = address))
+                Result.Success(civicsApiService.getRepresentatives(address = address.toFormattedString()))
             } catch (e: Exception) {
                 Result.Error(e)
             }

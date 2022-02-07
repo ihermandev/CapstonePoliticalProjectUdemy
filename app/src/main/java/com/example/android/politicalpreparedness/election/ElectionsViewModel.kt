@@ -46,10 +46,6 @@ class ElectionsViewModel(
         }
     }
 
-    fun getVoterInfo(electionId: Int, address: String) {
-        showLoading.value = true
-    }
-
     fun navigateToVoterInfo(election: ElectionDomain) {
         navigationCommand.postValue(
             NavigationCommand.To(

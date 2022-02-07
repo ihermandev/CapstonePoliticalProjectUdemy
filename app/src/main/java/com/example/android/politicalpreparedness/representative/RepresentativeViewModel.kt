@@ -2,10 +2,14 @@ package com.example.android.politicalpreparedness.representative
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.example.android.politicalpreparedness.R
 import com.example.android.politicalpreparedness.base.BaseViewModel
 import com.example.android.politicalpreparedness.data.network.models.Address
 import com.example.android.politicalpreparedness.data.repository.ElectionRepository
+import com.example.android.politicalpreparedness.representative.model.Representative
+import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class RepresentativeViewModel(
     app: Application,
@@ -18,9 +22,9 @@ class RepresentativeViewModel(
     val state = MutableLiveData<String>()
     val zipCode = MutableLiveData<String>()
 
-    //TODO: Establish live data for representatives and address
-
-    //TODO: Create function to fetch representatives from API from a provided address
+    private val _representatives = MutableLiveData<Representative>()
+    val representative
+        get() = _representatives
 
     /**
      * Clear the live data objects to start fresh next time the view model gets called
@@ -48,28 +52,23 @@ class RepresentativeViewModel(
     }
 
     private fun searchRepresentatives(address: Address) {
-        //TODO
+        showLoading.value = true
+        viewModelScope.launch {
+            try {
+                repository.searchRepresentatives(address)
+                showLoading.value = false
+            } catch (e: Exception) {
+                showErrorMessage.postValue("Expected representatives are not found")
+                Timber.e(e)
+                showLoading.value = false
+            }
+        }
     }
-
-    /**
-     *  The following code will prove helpful in constructing a representative from the API. This code combines the two nodes of the RepresentativeResponse into a single official :
-
-    val (offices, officials) = getRepresentativesDeferred.await()
-    _representatives.value = offices.flatMap { office -> office.getRepresentatives(officials) }
-
-    Note: getRepresentatives in the above code represents the method used to fetch data from the API
-    Note: _representatives in the above code represents the established mutable live data housing representatives
-
-     */
-
-    //TODO: Create function get address from geo location
-
-    //TODO: Create function to get address from individual fields
 
     /**
      * Validate the entered data and show error to the user if there's any invalid data
      */
-    fun validateEnteredData(address: Address): Boolean {
+    private fun validateEnteredData(address: Address): Boolean {
         if (address.line1.isNullOrEmpty()) {
             showSnackBarInt.value = R.string.err_line1
             return false
