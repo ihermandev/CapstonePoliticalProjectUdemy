@@ -1,26 +1,99 @@
 package com.example.android.politicalpreparedness.representative
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import com.example.android.politicalpreparedness.R
+import com.example.android.politicalpreparedness.base.BaseViewModel
+import com.example.android.politicalpreparedness.data.network.models.Address
+import com.example.android.politicalpreparedness.data.repository.ElectionRepository
+import com.example.android.politicalpreparedness.representative.model.Representative
+import kotlinx.coroutines.launch
+import timber.log.Timber
 
-class RepresentativeViewModel: ViewModel() {
+class RepresentativeViewModel(
+    app: Application,
+    private val repository: ElectionRepository,
+) : BaseViewModel(app) {
+    val addressLine1 = MutableLiveData<String>()
+    val addressLine2 = MutableLiveData<String>()
+    val city = MutableLiveData<String>()
+    val state = MutableLiveData<String>()
+    val zipCode = MutableLiveData<String>()
 
-    //TODO: Establish live data for representatives and address
+    private val _representatives = MutableLiveData<List<Representative>>()
+    val representative: LiveData<List<Representative>>
+        get() = _representatives
 
-    //TODO: Create function to fetch representatives from API from a provided address
+    fun validateAndSearchRepresentatives() {
+        val address = Address(
+            line1 = addressLine1.value,
+            line2 = addressLine2.value,
+            city = city.value,
+            state = state.value,
+            zip = zipCode.value
+        )
+
+        if (validateEnteredData(address)) {
+            searchRepresentatives(address)
+        }
+    }
+
+    fun validateAndSearchRepresentativesForLocation(address: Address) {
+        addressLine1.value = address.line1
+        addressLine2.value = address.line2
+        city.value = address.city
+        state.value = address.state
+        zipCode.value = address.zip
+        if (validateEnteredData(address)) {
+            searchRepresentatives(address)
+        }
+    }
+
+    private fun searchRepresentatives(address: Address) {
+        showLoading.value = true
+        viewModelScope.launch {
+            try {
+                _representatives.value = repository.searchRepresentatives(address)
+                showLoading.value = false
+            } catch (e: Exception) {
+                showErrorMessage.postValue("Expected representatives are not found")
+                Timber.e(e)
+                showLoading.value = false
+            }
+        }
+    }
+
+    fun setState(stateName: String?) {
+        if (!stateName.isNullOrEmpty()) {
+            state.value = stateName
+        }
+    }
 
     /**
-     *  The following code will prove helpful in constructing a representative from the API. This code combines the two nodes of the RepresentativeResponse into a single official :
-
-    val (offices, officials) = getRepresentativesDeferred.await()
-    _representatives.value = offices.flatMap { office -> office.getRepresentatives(officials) }
-
-    Note: getRepresentatives in the above code represents the method used to fetch data from the API
-    Note: _representatives in the above code represents the established mutable live data housing representatives
-
+     * Validate the entered data and show error to the user if there's any invalid data
      */
+    private fun validateEnteredData(address: Address): Boolean {
+        if (address.line1.isNullOrEmpty()) {
+            showSnackBarInt.value = R.string.err_line1
+            return false
+        }
 
-    //TODO: Create function get address from geo location
+        if (address.city.isNullOrEmpty()) {
+            showSnackBarInt.value = R.string.err_city
+            return false
+        }
 
-    //TODO: Create function to get address from individual fields
+        if (address.line1.isNullOrEmpty()) {
+            showSnackBarInt.value = R.string.err_state
+            return false
+        }
 
+        if (address.zip.isNullOrEmpty()) {
+            showSnackBarInt.value = R.string.err_zip
+            return false
+        }
+        return true
+    }
 }

@@ -1,21 +1,71 @@
 package com.example.android.politicalpreparedness.election
 
-import androidx.lifecycle.ViewModel
-import com.example.android.politicalpreparedness.database.ElectionDao
+import android.app.Application
+import androidx.lifecycle.*
+import com.example.android.politicalpreparedness.base.BaseViewModel
+import com.example.android.politicalpreparedness.base.NavigationCommand
+import com.example.android.politicalpreparedness.data.domain.ElectionDomain
+import com.example.android.politicalpreparedness.data.network.models.State
+import com.example.android.politicalpreparedness.data.repository.ElectionRepository
+import kotlinx.coroutines.launch
+import timber.log.Timber
 
-class VoterInfoViewModel(private val dataSource: ElectionDao) : ViewModel() {
+class VoterInfoViewModel(
+    app: Application,
+    private val repository: ElectionRepository,
+) : BaseViewModel(app) {
 
-    //TODO: Add live data to hold voter info
+    private val _election = MutableLiveData<ElectionDomain>()
+    val election: LiveData<ElectionDomain>
+        get() = _election
 
-    //TODO: Add var and methods to populate voter info
+    private val _electionStateData = MutableLiveData<State>()
+    val electionStateData
+        get() = _electionStateData
 
-    //TODO: Add var and methods to support loading URLs
 
-    //TODO: Add var and methods to save and remove elections to local database
-    //TODO: cont'd -- Populate initial state of save button to reflect proper action based on election saved status
+    fun getElectionById(id: Int) {
+        viewModelScope.launch {
+            try {
+                showLoading.value = true
+                val result = repository.getElectionById(id)
+                _election.value = result
+                showLoading.postValue(false)
+            } catch (e: Exception) {
+                showErrorMessage.postValue(e.localizedMessage)
+                showLoading.postValue(false)
+            }
+        }
+    }
 
-    /**
-     * Hint: The saved state can be accomplished in multiple ways. It is directly related to how elections are saved/removed from the database.
-     */
+    fun getVoterInfo(electionId: Int, address: String) {
+        showLoading.value = true
+        viewModelScope.launch {
+            try {
+                val result = repository.getVoterInfo(electionId = electionId, address = address)
+                val stateInfo = result.state?.firstOrNull()
+                if (stateInfo != null) {
+                    _electionStateData.postValue(stateInfo)
+                } else {
+                    showErrorMessage.value = "State not found"
+                }
+                showLoading.value = false
+
+            } catch (e: Exception) {
+                showErrorMessage.postValue("Expected voter details are not found")
+                Timber.e(e)
+                showLoading.value = false
+            }
+        }
+    }
+
+    fun updateElectionSavedState() {
+        viewModelScope.launch {
+            election.value?.let { data ->
+                repository.updateElectionState(electionID = data.id, isSaved = data.isSaved.not())
+                navigationCommand.value = NavigationCommand.Back
+            }
+        }
+    }
 
 }

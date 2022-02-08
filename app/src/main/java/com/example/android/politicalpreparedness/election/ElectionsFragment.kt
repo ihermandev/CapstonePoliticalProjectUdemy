@@ -4,28 +4,78 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.core.content.edit
+import androidx.databinding.DataBindingUtil
+import com.example.android.politicalpreparedness.R
+import com.example.android.politicalpreparedness.base.BaseFragment
+import com.example.android.politicalpreparedness.databinding.FragmentElectionBinding
+import com.example.android.politicalpreparedness.election.adapter.ElectionListAdapter
+import com.example.android.politicalpreparedness.election.adapter.ElectionListener
+import com.example.android.politicalpreparedness.util.Const.FIRST_TIME_FLOW
+import com.example.android.politicalpreparedness.util.getSharedPref
+import com.example.android.politicalpreparedness.util.isNetworkAvailable
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ElectionsFragment: Fragment() {
+class ElectionsFragment : BaseFragment() {
 
-    //TODO: Declare ViewModel
+    override val _viewModel: ElectionsViewModel by viewModel()
 
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    private lateinit var binding: FragmentElectionBinding
 
-        //TODO: Add ViewModel values and create ViewModel
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
 
-        //TODO: Add binding values
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_election, container, false)
 
-        //TODO: Link elections to voter info
+        binding.viewModel = _viewModel
+        binding.lifecycleOwner = this
 
-        //TODO: Initiate recycler adapters
+        setupRecyclerView(binding)
 
-        //TODO: Populate recycler adapters
+        checkFirstTimeUserFlow()
 
+        setupViewListeners(binding)
+
+        return binding.root
     }
 
-    //TODO: Refresh adapters when fragment loads
+    private fun setupViewListeners(binding: FragmentElectionBinding) {
+        binding.srlUpcoming.setOnRefreshListener {
+            if (isNetworkAvailable(requireContext())) {
+                _viewModel.updateElectionsData()
+            } else _viewModel.showNetworkError()
+        }
+    }
 
+    private fun checkFirstTimeUserFlow() {
+        activity?.getSharedPref()?.let { pref ->
+            if (pref.getBoolean(FIRST_TIME_FLOW, true)) {
+                if (isNetworkAvailable(requireContext())) {
+                    _viewModel.forceUpdateElectionsData()
+                    pref.edit {
+                        putBoolean(FIRST_TIME_FLOW, false)
+                        commit()
+                        apply()
+                    }
+                } else _viewModel.showNetworkError()
+            } else {
+                _viewModel.updateElectionsData()
+            }
+        } ?: _viewModel.updateElectionsData()
+    }
+
+    private fun setupRecyclerView(binding: FragmentElectionBinding) {
+        binding.rvUpcoming.adapter =
+            ElectionListAdapter(clickListener = ElectionListener {
+                _viewModel.navigateToVoterInfo(it)
+            })
+
+        binding.rvSaved.adapter =
+            ElectionListAdapter(clickListener = ElectionListener {
+                _viewModel.navigateToVoterInfo(it)
+            })
+    }
 }

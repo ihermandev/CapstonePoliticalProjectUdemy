@@ -9,6 +9,48 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <!-- TODO: Add necessary styles -->
+    <style name="LaunchScreenButton">
+        <item name="android:layout_marginStart">@dimen/padding_large</item>
+        <item name="android:layout_marginEnd">@dimen/padding_large</item>
+        <item name="android:backgroundTint">?colorPrimary</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="HeaderTextStyle">
+        <item name="android:fontFamily">serif</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textColor">?colorPrimaryDark</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="SubHeaderTextStyle">
+        <item name="android:fontFamily">serif</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textColor">?colorPrimary</item>
+        <item name="android:textSize">@dimen/text_size_normal</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="ContentTextStyle">
+        <item name="android:fontFamily">serif</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textColor">?colorPrimary</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="SocialIconStyle">
+        <item name="android:layout_width">@dimen/social_size</item>
+        <item name="android:layout_height">@dimen/social_size</item>
+        <item name="android:foreground">?selectableItemBackground</item>
+        <item name="android:padding">@dimen/padding_default</item>
+    </style>
+
+    <style name="Divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">?android:attr/listDivider</item>
+    </style>
 
 </resources>

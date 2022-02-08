@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="default_padding">8dp</dimen>
+    <dimen name="padding_default">8dp</dimen>
+    <dimen name="padding_small">4dp</dimen>
+    <dimen name="padding_large">16dp</dimen>
+    <dimen name="padding_xlarge">32dp</dimen>
+    <dimen name="padding_xxlarge">64dp</dimen>
 
-    <!-- TODO: Add necessary dimension values -->s
+    <dimen name="text_size_small">14sp</dimen>
+    <dimen name="text_size_normal">16sp</dimen>
+    <dimen name="text_size_medium">18sp</dimen>
+    <dimen name="text_size_large">20sp</dimen>
 
+    <dimen name="avatar_size">72dp</dimen>
+    <dimen name="social_size">48dp</dimen>
+    <dimen name="progress_bar_size">48dp</dimen>
 </resources>
