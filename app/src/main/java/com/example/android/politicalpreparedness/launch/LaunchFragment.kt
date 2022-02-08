@@ -19,10 +19,13 @@ class LaunchFragment : BaseFragment() {
         savedInstanceState: Bundle?,
     ): View {
         val binding = FragmentLaunchBinding.inflate(inflater)
-        binding.lifecycleOwner = this
 
-        binding.btnRepresentative.setOnClickListener { navToRepresentatives() }
-        binding.btnUpcoming.setOnClickListener { navToElections() }
+        with(binding) {
+            lifecycleOwner = this@LaunchFragment
+
+            btnRepresentative.setOnClickListener { navToRepresentatives() }
+            btnUpcoming.setOnClickListener { navToElections() }
+        }
 
         return binding.root
     }
