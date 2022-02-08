@@ -17,7 +17,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
 import com.example.android.politicalpreparedness.BuildConfig
 import com.example.android.politicalpreparedness.R
 import com.example.android.politicalpreparedness.base.BaseFragment
@@ -69,18 +68,17 @@ class VoterInfoFragment : BaseFragment() {
         savedInstanceState: Bundle?,
     ): View {
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_voter_info, container, false)
+        binding = FragmentVoterInfoBinding.inflate(inflater, container, false)
 
-        binding.viewModel = _viewModel
-        binding.lifecycleOwner = this
+        with(binding) {
+            viewModel = _viewModel
+            binding.lifecycleOwner = this@VoterInfoFragment
 
-        binding.stateLocations.movementMethod = LinkMovementMethod.getInstance()
-        binding.stateBallot.movementMethod = LinkMovementMethod.getInstance()
-        binding.votingFinder.movementMethod = LinkMovementMethod.getInstance()
+            stateLocations.movementMethod = LinkMovementMethod.getInstance()
+            stateBallot.movementMethod = LinkMovementMethod.getInstance()
+            votingFinder.movementMethod = LinkMovementMethod.getInstance()
 
-
-        binding.btnVoter.setOnClickListener {
-            _viewModel.getElectionById(electionID)
+            initViewListeners(binding)
         }
 
         return binding.root
@@ -94,6 +92,13 @@ class VoterInfoFragment : BaseFragment() {
         getUserLocation()
 
     }
+
+    private fun initViewListeners(binding: FragmentVoterInfoBinding) {
+        binding.btnVoter.setOnClickListener {
+            _viewModel.getElectionById(electionID)
+        }
+    }
+
 
     private fun getUserLocation() {
         when {

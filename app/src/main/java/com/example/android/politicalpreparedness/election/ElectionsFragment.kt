@@ -27,17 +27,17 @@ class ElectionsFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
+        binding = FragmentElectionBinding.inflate(inflater, container, false)
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_election, container, false)
+        with(binding) {
+            viewModel = _viewModel
+            lifecycleOwner = this@ElectionsFragment
 
-        binding.viewModel = _viewModel
-        binding.lifecycleOwner = this
-
-        setupRecyclerView(binding)
+            setupRecyclerView(this)
+            setupViewListeners(this)
+        }
 
         checkFirstTimeUserFlow()
-
-        setupViewListeners(binding)
 
         return binding.root
     }

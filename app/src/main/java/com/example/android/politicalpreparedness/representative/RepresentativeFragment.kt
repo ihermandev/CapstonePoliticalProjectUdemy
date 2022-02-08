@@ -76,11 +76,12 @@ class RepresentativeFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        binding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_representative, container, false)
+        binding = FragmentRepresentativeBinding.inflate(inflater, container, false)
 
-        binding.viewModel = _viewModel
-        binding.lifecycleOwner = this
+        with(binding) {
+            viewModel = _viewModel
+            lifecycleOwner = this@RepresentativeFragment
+        }
 
         return binding.root
     }

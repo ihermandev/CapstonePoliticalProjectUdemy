@@ -34,11 +34,11 @@ class ElectionListAdapter(private val clickListener: ElectionListener) :
             )
         }
 
-        fun bind(election: ElectionDomain, listener: ElectionListener) {
+        fun bind(item: ElectionDomain, clickListener: ElectionListener) {
             binding.apply {
-                this.election = election
-                this.listener = listener
-                this.executePendingBindings()
+                election = item
+                listener = clickListener
+                executePendingBindings()
             }
         }
     }
